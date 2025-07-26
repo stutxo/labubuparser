@@ -131,11 +131,11 @@ fn derive_palette(r: u8, g: u8, b: u8, invert: bool) -> Vec<Option<String>> {
     vec![None, Some(c1), Some(c2), Some(c3), Some(c4), Some(c5)]
 }
 
-/// Parses a MoonCat's ID into a 2D array of pixel colors.
+/// Parses a Labubu's ID into a 2D array of pixel colors.
 ///
 /// # Arguments
 ///
-/// * `cat_id` - The 5-byte hexadecimal ID string for the MoonCat (e.g., "0x00c4202241").
+/// * `cat_id` - The 5-byte hexadecimal ID string for the Labubu (e.g., "0x00c4202241").
 /// * `designs` - A slice of strings, where each string is a pixel map for a cat design.
 ///
 /// # Returns
@@ -143,7 +143,7 @@ fn derive_palette(r: u8, g: u8, b: u8, invert: bool) -> Vec<Option<String>> {
 /// A `Result` containing either the pixel data (`Vec<Vec<Option<String>>>`) on success,
 /// or an error message string on failure. The pixel data is a 2D array where each
 /// element is an `Option<String>` representing a hex color code (or `None` for transparent).
-pub fn mooncat_parser(cat_id: &str, designs: &[&str]) -> Result<Vec<Vec<Option<String>>>, String> {
+pub fn labubu_parser(cat_id: &str, designs: &[&str]) -> Result<Vec<Vec<Option<String>>>, String> {
     let cat_id_trimmed = cat_id.strip_prefix("0x").unwrap_or(cat_id);
 
     let bytes = hex::decode(cat_id_trimmed).map_err(|e| format!("Invalid hex in catId: {}", e))?;
