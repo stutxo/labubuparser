@@ -1,4 +1,4 @@
-mod mooncat_parser_lib;
+mod labubu_parser_lib;
 use image::{Rgba, RgbaImage, imageops};
 
 fn parse_hex_color(hex_str: &str) -> Option<[u8; 3]> {
@@ -18,7 +18,7 @@ fn main() {
 
     let cat_id = "0000000000";
 
-    match mooncat_parser_lib::mooncat_parser(cat_id, LABUBU_DESIGNS) {
+    match labubu_parser_lib::labubu_parser(cat_id, LABUBU_DESIGNS) {
         Ok(pixel_data) => {
             println!("Successfully parsed Cat ID: {}", cat_id);
 
@@ -57,7 +57,7 @@ fn main() {
                 imageops::FilterType::Nearest,
             );
 
-            let output_filename = "mooncat.png";
+            let output_filename = "labubu.png";
             scaled_img
                 .save(output_filename)
                 .expect("Failed to save image.");
