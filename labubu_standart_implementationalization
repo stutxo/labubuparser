@@ -1,0 +1,206 @@
+# The Labubu Standard: A Protocol for Off-Chain Pixel Art Assets on Bitcoin
+
+## Table of Contents
+
+1. Introduction
+2. Philosophy of the Labubu
+3. System Architecture
+4. The Labubu Minting Process
+5. Art Generation and Viewing
+6. Ownership Tracking and Satoshi Identity
+7. Validity and Integrity
+8. Technical Specification
+9. Use Cases and Future Directions
+10. Conclusion
+
+---
+
+## 1. Introduction
+
+The **Labubu Standard** defines a decentralized, minimalist protocol for managing pixel art characters called "Labubus" on the Bitcoin network. This specification outlines the minting, identification, ownership, and validation rules for Labubu assets, relying on off-chain art and on-chain ownership indicators. The Labubu is not just a collectible but a digital token of identity, verified by the most minimal and robust infrastructure Bitcoin has to offer: a single satoshi.
+
+This document serves as the definitive reference for developers, collectors, and explorers who wish to implement, interact with, or understand the Labubu Standard.
+
+---
+
+## 2. Philosophy of the Labubu
+
+The Labubu Standard was created to champion:
+
+* **Simplicity**: The protocol is minimal by design. It avoids complex scripting and metadata embedding in favor of deterministic rules.
+* **Off-Chain Creativity**: Pixel art is generated off-chain but referenced and indexed by Bitcoin transaction data.
+* **Ownership Authenticity**: A Labubu’s true owner is the holder of a specific satoshi, never a copy.
+* **Fragile Scarcity**: Like a tamagotchi, a Labubu’s existence can be invalidated by careless handling—splitting its UTXO is akin to breaking a seal.
+
+This fragility is intentional. It reflects both the impermanence and individuality of digital creatures.
+
+---
+
+## 3. System Architecture
+
+The Labubu Standard consists of the following core components:
+
+* **Labubu Control Block**: A specific format embedded in Bitcoin transactions.
+* **Labubu Art Generator**: An off-chain deterministic pixel art generator driven by the transaction ID.
+* **Labubu Assets Website**: A frontend that indexes, displays, and validates Labubus.
+* **Ownership Verifier**: A utility to check the current holder of the Labubu based on the UTXO structure.
+
+All interactions between these components center around Bitcoin transactions. No centralized registry, smart contracts, or metadata files are needed.
+
+---
+
+## 4. The Labubu Minting Process
+
+### 4.1 Eligibility
+
+A Labubu is minted when a transaction:
+
+* Includes a **Labubu Control Block** in its witness or scriptSig.
+* Has an **output of at least 1 satoshi**.
+
+### 4.2 The Control Block
+
+The control block is a chunk of data included in a transaction script that identifies it as a valid Labubu mint. It must contain:
+
+```
+OP_FALSE
+OP_IF
+  "labubu"
+  "v1"
+  "image/labubu-default"
+  0x00
+OP_ENDIF
+```
+
+This format, based on the ordinal theory inscription method, acts as the fingerprint of a Labubu mint.
+
+### 4.3 TXID as the Seed
+
+Once the transaction is confirmed, the **TXID** of the minting transaction becomes the unique seed used to generate the Labubu's appearance. The art is derived solely from this 64-character hexadecimal string.
+
+---
+
+## 5. Art Generation and Viewing
+
+### 5.1 Deterministic Pixel Art
+
+The Labubu image is generated via a deterministic off-chain pixel art generator. Input: TXID. Output: A small, black-and-white Labubu creature.
+
+### 5.2 Viewing Labubus
+
+Users can visit the [Labubu Assets Website](https://labubu.io) and enter a TXID or use an explorer index to view existing Labubus.
+
+The site will:
+
+* Validate the transaction includes a correct control block.
+* Confirm that the output UTXO exists and is unspent.
+* Generate and render the image using the TXID.
+
+This makes Labubu art permanently viewable, yet unforgeable.
+
+---
+
+## 6. Ownership Tracking and Satoshi Identity
+
+The true owner of a Labubu is the holder of the **first satoshi** in the **first output** of the minting transaction.
+
+This satoshi is:
+
+* **Non-fungible**: Only this satoshi can be used to prove ownership.
+* **Indivisible**: Splitting the UTXO that contains it destroys the Labubu.
+
+To verify ownership:
+
+1. Find the UTXO created by the minting transaction.
+2. Check that it is unspent.
+3. Trace its history to confirm it is still intact (i.e., not split).
+
+This mechanism treats the satoshi as a **pink slip**, akin to the title document of a car.
+
+---
+
+## 7. Validity and Integrity
+
+A Labubu is considered valid if:
+
+* The minting transaction includes the proper control block.
+* The UTXO that contains the first satoshi is unspent.
+* The UTXO has not been split or merged.
+
+If the UTXO is:
+
+* **Spent and not reassembled** → Labubu is void.
+* **Part of a split output** → Labubu is permanently invalid.
+
+There is **no recovery mechanism**. This strictness ensures integrity and enforces careful custody.
+
+---
+
+## 8. Technical Specification
+
+### 8.1 Minting
+
+* Must include control block as defined.
+* Minimum output: 1 satoshi.
+
+### 8.2 Script Format
+
+Labubu control block in witness (if SegWit) or scriptSig:
+
+```asm
+OP_FALSE
+OP_IF
+  "labubu"
+  "v1"
+  "image/labubu-default"
+  0x00
+OP_ENDIF
+```
+
+### 8.3 Art Generation Logic
+
+* Input: TXID (64-hex)
+* Use SHA256 or custom PRNG for pixel layout
+* Fixed size (e.g., 32x32 monochrome grid)
+
+### 8.4 Validity Check
+
+1. Check for Control Block.
+2. Verify UTXO exists and is unspent.
+3. UTXO must not have changed structure.
+
+---
+
+## 9. Use Cases and Future Directions
+
+### 9.1 Collectibles
+
+Labubus can be collected, traded (carefully), or displayed in wallets and galleries.
+
+### 9.2 Games and Identity
+
+They may serve as characters in games, digital pets, or wallet mascots.
+
+### 9.3 Extensions
+
+Future versions could include:
+
+* Colored pixel art (with entropy from TXID)
+* Evolving Labubus (based on sat age or movement)
+* Cross-chain mirrors
+
+### 9.4 Tooling
+
+* Labubu Explorer
+* Satoshi Ownership Verifier
+* Wallet integration
+
+---
+
+## 10. Conclusion
+
+The Labubu Standard offers a novel way to bind identity, art, and ownership to the smallest unit of Bitcoin. With no external dependencies, and complete reliance on Bitcoin-native mechanics, it embodies the ideals of digital permanence and self-custody.
+
+Every Labubu is unique. Every Labubu can die. But every Labubu lives as long as its satoshi is held whole.
+
+*Mint wisely. Guard closely.*
