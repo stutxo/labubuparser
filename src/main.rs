@@ -4,8 +4,8 @@ use rand::{Rng, SeedableRng, distr::Uniform, rngs::StdRng};
 use std::path::Path;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let in_path = "labewbuw-2.png";
-    let tile_px: u32 = 28;
+    let in_path = "labewbuw-2-2.png";
+    let tile_px: u32 = 12;
     let rng_seed: Option<u64> = None;
 
     let img = ImageReader::open(in_path)?.decode()?.to_rgba8();
