@@ -6,3 +6,7 @@ edition = "2024"
 [dependencies]
 hex = "0.4"
 image = "0.25"
+rand = "0.9.2"
+palette = "0.7.6"
+imagequant = "4"   # Moz‑based PNG quantiser
+png        = "0.17"
